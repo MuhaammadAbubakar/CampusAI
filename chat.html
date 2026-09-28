@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusAI — Admission Advisory Desk</title>
+  <meta name="description" content="Full-window conversational admission counselor for Pakistani university eligibility, merits, fees, and scholarships.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Typography & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <!-- Markdown Parser & Sanitizer -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #CF2E2E;
+      --primary-dark: #9B1C1C;
+      --primary-light: #FEF2F2;
+      --secondary: #1E3A5F;
+      --secondary-dark: #12243A;
+
+      /* Dark Wine Accent matching AI */
+      --accent-ai: #420505;
+
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --border: #E2E8F0;
+      --border-subtle: #F1F5F9;
+
+      --text: #0F172A;
+      --text-muted: #64748B;
+
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-pill: 9999px;
+      --header-height: 70px;
+      --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Shutter-Up Entrance Animation */
+    @keyframes shutterUpEntrance {
+      0% {
+        transform: translateY(60px);
+        opacity: 0.3;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      animation: shutterUpEntrance 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* ==========================================================================
+       Header (Identical to Homepage, with Home on the Right + Animated Underline)
+       ========================================================================== */
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--header-height);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+    }
+
+    .header-inner {
+      height: 100%;
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-svg-mark {
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+
+    .brand:hover .brand-svg-mark {
+      transform: scale(1.05);
+    }
+
+    .brand-text h1 {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--secondary);
+      line-height: 1.15;
+      letter-spacing: -0.3px;
+    }
+
+    .brand-text p {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Nav Link with Animated Underline in AI Color */
+    .nav-link {
+      position: relative;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 8px 14px;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0px;
+      left: 50%;
+      transform: translateX(-50%) scaleX(0);
+      width: calc(100% - 20px);
+      height: 3px;
+      background-color: var(--primary);
+      border-radius: 3px;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      transform: translateX(-50%) scaleX(1);
+    }
+
+    .nav-link.active {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .btn-clear-chat {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-left: 8px;
+    }
+
+    .btn-clear-chat:hover {
+      background: var(--primary-light);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    /* ==========================================================================
+       Full-Window Chat Workspace (Expansive 100% Window Width)
+       ========================================================================== */
+    .chat-workspace {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-height: calc(100vh - var(--header-height));
+    }
+
+    .chat-stream-container {
+      flex: 1;
+      padding: 32px 32px 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Full Window Inner Wrap (Expanded to 1380px) */
+    .chat-inner-wrap {
+      width: 100%;
+      max-width: 1380px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Full-Window Welcome Box */
+    .chat-welcome-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px 36px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      border-top: 4px solid var(--primary);
+      margin-bottom: 8px;
+      width: 100%;
+    }
+
+    .welcome-emblem {
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chat-welcome-card h3 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--secondary);
+      margin-bottom: 8px;
+      letter-spacing: -0.4px;
+    }
+
+    .chat-welcome-card p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 820px;
+      margin: 0 auto 24px;
+    }
+
+    .chips-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.6px;
+      margin-bottom: 12px;
+    }
+
+    .chips-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .query-chip {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--secondary);
+      font-size: 13.5px;
+      font-weight: 500;
+      padding: 9px 18px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .query-chip:hover {
+      background: var(--secondary);
+      color: #FFFFFF;
+      border-color: var(--secondary);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .query-chip i {
+      color: var(--primary);
+      font-size: 15px;
+    }
+
+    .query-chip:hover i {
+      color: #FFFFFF;
+    }
+
+    /* Message Bubbles (Expansive Full Window Layout) */
+    .msg-bubble {
+      max-width: 88%;
+      padding: 16px 24px;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      line-height: 1.65;
+      position: relative;
+      animation: msgPop 0.25s ease-out;
+    }
+
+    @keyframes msgPop {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .msg-bubble.user {
+      align-self: flex-end;
+      background: var(--primary);
+      color: #FFFFFF;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 4px 14px rgba(207, 46, 46, 0.25);
+    }
+
+    .msg-bubble.bot {
+      align-self: flex-start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-bottom-left-radius: 4px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .msg-bubble.bot p {
+      margin-bottom: 10px;
+    }
+
+    .msg-bubble.bot p:last-child {
+      margin-bottom: 0;
+    }
+
+    .msg-bubble.bot strong {
+      color: var(--secondary);
+      font-weight: 700;
+    }
+
+    .msg-bubble.bot ul, .msg-bubble.bot ol {
+      margin: 8px 0 12px 0;
+      padding-left: 22px;
+    }
+
+    .msg-bubble.bot li {
+      margin-bottom: 5px;
+    }
+
+    .msg-bubble.bot table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 13.5px;
+    }
+
+    .msg-bubble.bot th, .msg-bubble.bot td {
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    .msg-bubble.bot th {
+      background: var(--primary-light);
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .msg-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .btn-msg-tool {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 12.5px;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-msg-tool:hover {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    /* Typing Indicator */
+    .typing-box {
+      align-self: flex-start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 14px 22px;
+      border-radius: var(--radius-md);
+      font-size: 13.5px;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .typing-dots {
+      display: flex;
+      gap: 5px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--text-muted);
+      border-radius: 50%;
+      animation: bounceDot 1.4s infinite ease-in-out;
+    }
+
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes bounceDot {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.3; }
+      40% { transform: scale(1.1); opacity: 1; background: var(--primary); }
+    }
+
+    /* ==========================================================================
+       Compact Floating Composer (NO Bulky White Background Container)
+       ========================================================================== */
+    .chat-bottom-area {
+      background: transparent;
+      border: none;
+      padding: 10px 32px 28px;
+      width: 100%;
+    }
+
+    .composer-container {
+      width: 100%;
+      max-width: 1380px;
+      margin: 0 auto;
+    }
+
+    /* Sleek Floating Composer Bar */
+    .composer-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 8px 14px 8px 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: var(--transition);
+    }
+
+    .composer-card:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 6px 24px rgba(207, 46, 46, 0.15);
+    }
+
+    .composer-textarea {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.5;
+      resize: none;
+      max-height: 140px;
+      min-height: 28px;
+      padding: 6px 0;
+    }
+
+    .composer-textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    .btn-send {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--primary);
+      color: #FFFFFF;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+
+    .btn-send:hover {
+      background: var(--primary-dark);
+      transform: scale(1.05);
+    }
+
+    .btn-send:disabled {
+      background: var(--border);
+      color: var(--text-muted);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .composer-footnote {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 8px;
+      padding: 0 6px;
+    }
+
+    /* ==========================================================================
+       Same Professional 4-Column Footer as Homepage
+       ========================================================================== */
+    .site-footer {
+      background: var(--secondary-dark);
+      color: #94A3B8;
+      padding: 68px 0 28px;
+      margin-top: auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 14px;
+      width: 100%;
+    }
+
+    .footer-container {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .footer-main-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
+      gap: 40px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .footer-brand .brand {
+      margin-bottom: 12px;
+    }
+
+    .footer-brand .brand-text h3 {
+      color: #FFFFFF;
+      font-size: 19px;
+      margin: 0;
+      font-weight: 800;
+    }
+
+    .footer-brand .brand-text p {
+      color: #94A3B8;
+      font-size: 12px;
+    }
+
+    .footer-desc {
+      margin-top: 16px;
+      line-height: 1.65;
+      font-size: 13.5px;
+      max-width: 320px;
+    }
+
+    .footer-cert-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      margin-top: 18px;
+      font-size: 12px;
+      color: #E2E8F0;
+    }
+
+    .footer-cert-pill i {
+      color: #38BDF8;
+      font-size: 16px;
+    }
+
+    .footer-col-title {
+      color: #FFFFFF;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 18px;
+      letter-spacing: -0.2px;
+    }
+
+    .footer-col-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col-links a, .footer-col-links button {
+      color: #94A3B8;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+      background: transparent;
+      border: none;
+      font-size: 13.5px;
+      text-align: left;
+      cursor: pointer;
+      text-decoration: none;
+      font-family: inherit;
+    }
+
+    .footer-col-links a:hover, .footer-col-links button:hover {
+      color: #FFFFFF;
+      transform: translateX(3px);
+    }
+
+    .footer-col-links i {
+      color: var(--primary);
+      font-size: 12px;
+    }
+
+    .footer-info-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .footer-bottom-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-top: 24px;
+      font-size: 13px;
+      color: #64748B;
+    }
+
+    .footer-bottom-bar a {
+      color: #94A3B8;
+      text-decoration: none;
+    }
+
+    .footer-bottom-bar a:hover {
+      color: #FFFFFF;
+    }
+
+    @media (max-width: 900px) {
+      .header-inner, .chat-stream-container, .chat-bottom-area, .footer-container {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+      .footer-main-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .footer-main-grid {
+        grid-template-columns: 1fr;
+      }
+      .msg-bubble {
+        max-width: 95%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ==========================================================================
+       Header (CampusAI Brand, Nav with Home on Right + Active Animated Underline)
+       ========================================================================== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand">
+        <!-- SVG Emblem -->
+        <svg class="brand-svg-mark" viewBox="0 0 64 64">
+          <defs>
+            <linearGradient id="cShield" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#CF2E2E" />
+              <stop offset="100%" stop-color="#8F1515" />
+            </linearGradient>
+            <linearGradient id="cGold" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FBBF24" />
+              <stop offset="100%" stop-color="#D97706" />
+            </linearGradient>
+          </defs>
+          <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#cShield)" />
+          <polygon points="32,18 49,25.5 32,33 15,25.5" fill="#FFFFFF" />
+          <path d="M22,29.5 L22,38 C22,43 42,43 42,38 L42,29.5" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" />
+          <path d="M44,26.5 L47.5,33 L47.5,39" fill="none" stroke="url(#cGold)" stroke-width="2" stroke-linecap="round" />
+          <circle cx="47.5" cy="40.5" r="1.5" fill="url(#cGold)" />
+        </svg>
+        <div class="brand-text">
+          <h1>CampusAI</h1>
+          <p>University Admission Assistant</p>
+        </div>
+      </a>
+
+      <!-- Navigation with Home on Right and Underline Animation -->
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="index.html#explore" class="nav-link">Universities</a>
+        <a href="index.html#features" class="nav-link">Information Areas</a>
+        <a href="chat.html" class="nav-link active">Admission Desk</a>
+        <button type="button" class="btn-clear-chat" onclick="resetConversation()" title="Clear Chat History">
+          <i class="ph ph-trash"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       Full-Window Chat Workspace (Expansive Width)
+       ========================================================================== -->
+  <main class="chat-workspace">
+    <div class="chat-stream-container" id="chatStream">
+      <div class="chat-inner-wrap" id="chatInnerWrap">
+
+        <!-- Full Window Welcome Box -->
+        <div class="chat-welcome-card" id="chatWelcomeCard">
+          <div class="welcome-emblem">
+            <svg viewBox="0 0 64 64" width="54" height="54">
+              <rect x="4" y="4" width="56" height="56" rx="14" fill="#FEF2F2" stroke="#FCA5A5" stroke-width="1.5" />
+              <polygon points="32,18 49,25.5 32,33 15,25.5" fill="#CF2E2E" />
+              <path d="M22,29.5 L22,38 C22,43 42,43 42,38 L42,29.5" fill="none" stroke="#CF2E2E" stroke-width="2.5" stroke-linecap="round" />
+            </svg>
+          </div>
+          <h3>University Admission &amp; Policy Helpdesk</h3>
+          <p>
+            Welcome to the CampusAI conversational advisory desk. Inquire about official entry test formulas, expected merit cutoffs, complete semester fee structures, and HEC scholarship rules across Pakistan.
+          </p>
+
+          <div class="chips-label">Popular Student Queries:</div>
+          <div class="chips-grid" id="chipsGrid">
+            <!-- Chips will render dynamically -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Sleek Floating Full-Width Composer (No Heavy Bottom Background) -->
+    <div class="chat-bottom-area">
+      <div class="composer-container">
+        <div class="composer-card">
+          <textarea id="composerInput" class="composer-textarea" rows="1" placeholder="Type your admission, fee, or merit question here (e.g. UET merit formula, UOS fees)..."></textarea>
+          <!-- Submit Button calling webhook -->
+          <button id="sendBtn" type="button" class="btn-send" aria-label="Send Message" title="Send to n8n Webhook">
+            <i class="ph ph-paper-plane-right"></i>
+          </button>
+        </div>
+        <div class="composer-footnote">
+          <span>Connected to Official Admission Knowledge Base (n8n Webhook)</span>
+          <span>Press <strong>Enter</strong> to send &bull; <strong>Shift + Enter</strong> for new line</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ==========================================================================
+       Same 4-Column Footer as Homepage
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-main-grid">
+
+        <!-- Col 1: Brand & Mission -->
+        <div class="footer-brand">
+          <div class="brand">
+            <svg class="brand-svg-mark" viewBox="0 0 64 64" width="38" height="38">
+              <rect x="4" y="4" width="56" height="56" rx="14" fill="#CF2E2E" />
+              <polygon points="32,18 49,25.5 32,33 15,25.5" fill="#FFFFFF" />
+              <path d="M22,29.5 L22,38 C22,43 42,43 42,38 L42,29.5" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" />
+            </svg>
+            <div class="brand-text">
+              <h3>CampusAI</h3>
+              <p>University Admission Assistant</p>
+            </div>
+          </div>
+          <p class="footer-desc">
+            An independent, non-commercial digital counseling desk empowering Pakistani students with transparent merit criteria, fee structures, and statutory educational rights.
+          </p>
+          <div class="footer-cert-pill">
+            <i class="ph ph-shield-check"></i>
+            <span>Higher Education Commission (HEC) Directives Compliant</span>
+          </div>
+        </div>
+
+        <!-- Col 2: Academic Disciplines Covered -->
+        <div>
+          <h4 class="footer-col-title">Covered Disciplines</h4>
+          <ul class="footer-col-links">
+            <li><button type="button" onclick="setQueryAndSend('Engineering programs PEC criteria and ECAT weightage batayein')"><i class="ph ph-caret-right"></i> Engineering &amp; Technology (PEC)</button></li>
+            <li><button type="button" onclick="setQueryAndSend('Computer Science and Software Engineering NCEAC universities batayein')"><i class="ph ph-caret-right"></i> Computing &amp; IT (NCEAC)</button></li>
+            <li><button type="button" onclick="setQueryAndSend('Natural Sciences and Social Sciences admissions QAU aur PU ki batayein')"><i class="ph ph-caret-right"></i> Natural &amp; Social Sciences</button></li>
+            <li><button type="button" onclick="setQueryAndSend('Business and Management programs admissions criteria batayein')"><i class="ph ph-caret-right"></i> Business Administration (NBEAC)</button></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Student Rights & Policies -->
+        <div>
+          <h4 class="footer-col-title">Student Safeguards</h4>
+          <ul class="footer-col-links">
+            <li><button type="button" onclick="setQueryAndSend('HEC National Fee Refund Policy ki exact percentages aur timeline kya hai?')"><i class="ph ph-caret-right"></i> HEC Fee Refund Policy</button></li>
+            <li><button type="button" onclick="setQueryAndSend('Balochistan aur Former FATA quota seats ki eligibility kya hai?')"><i class="ph ph-caret-right"></i> Provincial Quota Admissions</button></li>
+            <li><button type="button" onclick="setQueryAndSend('University mein semester freeze karne ke kya rules hain?')"><i class="ph ph-caret-right"></i> Semester Freezing Regulations</button></li>
+            <li><button type="button" onclick="setQueryAndSend('HEC Need-Based aur PEEF scholarships application process kya hai?')"><i class="ph ph-caret-right"></i> Financial Aid &amp; Grants</button></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Advisory Status & Support -->
+        <div>
+          <h4 class="footer-col-title">Counseling Desk</h4>
+          <div class="footer-info-card">
+            <strong style="color: #FFFFFF; display: block; margin-bottom: 4px;">Full-Window AI Consultation:</strong>
+            Powered by RAG automated retrieval from authorized university prospectuses and gazettes.
+          </div>
+          <button type="button" class="query-chip" onclick="resetConversation()" style="background: rgba(255,255,255,0.1); color:#fff; border-color: rgba(255,255,255,0.2); width:100%; justify-content:center;">
+            <i class="ph ph-arrow-counter-clockwise"></i> Start Fresh Session
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom-bar">
+        <div>
+          &copy; 2024–2026 CampusAI. All university logos, names, and trademarks belong to their respective statutory chartered bodies.
+        </div>
+        <div>
+          <span>Non-commercial educational counseling service</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Optional External Configuration (Ignored by Git for Security) -->
+  <script src="js/config.js"></script>
+
+  <script>
+    // Read from window.CAMPUS_CONFIG (defined in gitignored config.js)
+    const WEBHOOK_URL = (typeof window.CAMPUS_CONFIG !== 'undefined' && window.CAMPUS_CONFIG.WEBHOOK_URL)
+      ? window.CAMPUS_CONFIG.WEBHOOK_URL
+      : "YOUR_N8N_WEBHOOK_URL_HERE";
+    let SESSION_ID = "rag-full-" + Math.random().toString(36).slice(2, 10);
+    let lastUserMessage = "";
+
+    const quickQueries = [
+      "UET Lahore Merit Formula & ECAT weightage",
+      "NUST NET Registration & Fee structure",
+      "FAST-NUCES BS CS eligibility & campuses",
+      "HEC National Fee Refund Policy timeline",
+      "Undergraduate Need-Based Scholarships"
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initChat();
+      checkUrlQuery();
+    });
+
+    function initChat() {
+      const chipsWrap = document.getElementById('chipsGrid');
+      const input = document.getElementById('composerInput');
+      const sendBtn = document.getElementById('sendBtn');
+
+      // Populate Quick Chips
+      if (chipsWrap) {
+        chipsWrap.innerHTML = '';
+        quickQueries.forEach(q => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'query-chip';
+          btn.innerHTML = `<i class="ph ph-arrow-bend-down-right"></i> ${q}`;
+          btn.onclick = () => {
+            input.value = q;
+            handleSend();
+          };
+          chipsWrap.appendChild(btn);
+        });
+      }
+
+      // Auto-resize textarea
+      input.addEventListener('input', function () {
+        this.style.height = 'auto';
+        this.style.height = Math.min(this.scrollHeight, 140) + 'px';
+        if (this.value === '') this.style.height = 'auto';
+      });
+
+      // Enter to send
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          handleSend();
+        }
+      });
+
+      // Send button click
+      sendBtn.addEventListener('click', handleSend);
+      input.focus();
+    }
+
+    // Check if query was passed in URL (e.g. chat.html?q=...)
+    function checkUrlQuery() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const query = urlParams.get('q');
+      if (query) {
+        const input = document.getElementById('composerInput');
+        if (input) {
+          input.value = query;
+          setTimeout(handleSend, 250);
+        }
+      }
+    }
+
+    function setQueryAndSend(q) {
+      const input = document.getElementById('composerInput');
+      if (input) {
+        input.value = q;
+        handleSend();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function handleSend() {
+      const input = document.getElementById('composerInput');
+      const sendBtn = document.getElementById('sendBtn');
+      if (!input || !sendBtn) return;
+
+      const text = input.value.trim();
+      if (!text) return;
+
+      lastUserMessage = text;
+      appendMessage(text, 'user');
+
+      input.value = '';
+      input.style.height = 'auto';
+      sendBtn.disabled = true;
+
+      showTyping();
+      queryWebhook(text);
+    }
+
+    async function queryWebhook(userText) {
+      const sendBtn = document.getElementById('sendBtn');
+      const input = document.getElementById('composerInput');
+
+      try {
+        const res = await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chatInput: userText, sessionId: SESSION_ID })
+        });
+
+        removeTyping();
+
+        if (!res.ok) throw new Error('Webhook network response failed');
+
+        const reply = await res.text();
+        if (!reply.trim()) throw new Error('Empty response received');
+
+        appendMessage(reply, 'bot');
+      } catch (err) {
+        removeTyping();
+        appendMessage("Maazrat, admission knowledge base connection mein masla aa gaya hai. Barah-e-karam dobara koshish karein.", 'bot');
+        console.error('Webhook error:', err);
+      } finally {
+        if (sendBtn) sendBtn.disabled = false;
+        if (input) input.focus();
+      }
+    }
+
+    function appendMessage(text, role) {
+      const wrap = document.getElementById('chatInnerWrap');
+      const welcome = document.getElementById('chatWelcomeCard');
+
+      if (welcome && welcome.style.display !== 'none') {
+        welcome.style.display = 'none';
+      }
+
+      const bubble = document.createElement('div');
+      bubble.className = `msg-bubble ${role}`;
+
+      if (role === 'bot') {
+        let clean = text;
+        if (typeof marked !== 'undefined' && typeof DOMPurify !== 'undefined') {
+          clean = DOMPurify.sanitize(marked.parse(text));
+        }
+        bubble.innerHTML = clean;
+
+        // Action tools (Copy & Regenerate)
+        const actions = document.createElement('div');
+        actions.className = 'msg-actions';
+        actions.innerHTML = `
+          <button type="button" class="btn-msg-tool" onclick="copyMessage(this)" data-content="${encodeURIComponent(text)}">
+            <i class="ph ph-copy"></i> Copy
+          </button>
+          <button type="button" class="btn-msg-tool" onclick="regenerate()">
+            <i class="ph ph-arrow-counter-clockwise"></i> Regenerate
+          </button>
+        `;
+        bubble.appendChild(actions);
+      } else {
+        bubble.textContent = text;
+      }
+
+      wrap.appendChild(bubble);
+      scrollToLatest();
+    }
+
+    function showTyping() {
+      const wrap = document.getElementById('chatInnerWrap');
+      if (!wrap) return;
+
+      const typing = document.createElement('div');
+      typing.className = 'typing-box';
+      typing.id = 'typingBox';
+      typing.innerHTML = `
+        <span>Querying admission knowledge base</span>
+        <div class="typing-dots">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      `;
+      wrap.appendChild(typing);
+      scrollToLatest();
+    }
+
+    function removeTyping() {
+      const t = document.getElementById('typingBox');
+      if (t) t.remove();
+    }
+
+    function scrollToLatest() {
+      const stream = document.getElementById('chatStream');
+      if (stream) {
+        stream.scrollTo({ top: stream.scrollHeight, behavior: 'smooth' });
+      }
+    }
+
+    function copyMessage(btn) {
+      const raw = btn.getAttribute('data-content');
+      const decoded = decodeURIComponent(raw);
+      navigator.clipboard.writeText(decoded).then(() => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i class="ph ph-check"></i> Copied';
+        setTimeout(() => { btn.innerHTML = orig; }, 1800);
+      });
+    }
+
+    function regenerate() {
+      if (!lastUserMessage) return;
+      const wrap = document.getElementById('chatInnerWrap');
+      const botBubbles = wrap.querySelectorAll('.msg-bubble.bot');
+      if (botBubbles.length > 0) {
+        botBubbles[botBubbles.length - 1].remove();
+      }
+      showTyping();
+      queryWebhook(lastUserMessage);
+    }
+
+    function resetConversation() {
+      if (confirm("Kya aap conversation clear karna chahte hain?")) {
+        const wrap = document.getElementById('chatInnerWrap');
+        const welcome = document.getElementById('chatWelcomeCard');
+        if (!wrap) return;
+
+        wrap.innerHTML = '';
+        if (welcome) {
+          wrap.appendChild(welcome);
+          welcome.style.display = 'block';
+        }
+        SESSION_ID = "rag-full-" + Math.random().toString(36).slice(2, 10);
+        lastUserMessage = "";
+      }
+    }
+  </script>
+</body>
+
+</html>

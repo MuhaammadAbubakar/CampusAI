@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#CF2E2E" />
+      <stop offset="100%" stop-color="#8F1515" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FBBF24" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+  </defs>
+
+  <!-- Base Rounded Shield / Tile -->
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#shieldGrad)" />
+  <rect x="5.5" y="5.5" width="53" height="53" rx="12.5" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" />
+
+  <!-- Graduation Cap (Mortarboard) -->
+  <polygon points="32,18 49,25.5 32,33 15,25.5" fill="#FFFFFF" />
+  
+  <!-- Mortarboard Lower Cap -->
+  <path d="M22,29.5 L22,38 C22,43 42,43 42,38 L42,29.5" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" />
+
+  <!-- Golden Tassel -->
+  <path d="M44,26.5 L47.5,33 L47.5,39" fill="none" stroke="url(#goldGrad)" stroke-width="2" stroke-linecap="round" />
+  <circle cx="47.5" cy="40.5" r="1.5" fill="url(#goldGrad)" />
+
+  <!-- University Academic Pillars / Open Book Arch at bottom -->
+  <path d="M22,46 C28,43 36,43 42,46" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" />
+  <line x1="32" y1="44" x2="32" y2="48" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" />
+</svg>

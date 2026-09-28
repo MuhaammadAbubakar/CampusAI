@@ -1,0 +1,38 @@
+# ==============================================================================
+# CampusAI - Git Ignore Configuration
+# Protect sensitive credentials, production deployment artifacts, and local configs
+# ==============================================================================
+
+# Private local configuration containing active n8n webhook URL
+js/config.js
+
+# Standalone deployment file for InfinityFree (contains active production webhook)
+deploy_infinityfree.html
+
+# Raw un-sanitized n8n exported workflows containing private keys or credentials
+CampusAI (1).json
+*original*.json
+*secret*.json
+credentials.json
+
+# Environment variables
+.env
+.env.*
+*.env
+
+# Operating system files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# IDE and Editor directories
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.system_generated/

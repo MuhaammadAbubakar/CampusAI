@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusAI — University Admission Assistant</title>
+  <meta name="description" content="CampusAI is a specialized academic advisory assistant offering verified data on Pakistani university admissions, fee structures, and scholarships.">
+
+  <!-- Custom SVG Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Typography & Phosphor Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- ==========================================================================
+       Header (CampusAI Brand, Nav with Home on Right + Active Animated Underline)
+       ========================================================================== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <!-- Custom SVG Emblem -->
+        <svg class="brand-svg-mark" viewBox="0 0 64 64">
+          <defs>
+            <linearGradient id="brandShield" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#CF2E2E" />
+              <stop offset="100%" stop-color="#8F1515" />
+            </linearGradient>
+            <linearGradient id="brandGold" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FBBF24" />
+              <stop offset="100%" stop-color="#D97706" />
+            </linearGradient>
+          </defs>
+          <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#brandShield)" />
+          <polygon points="32,18 49,25.5 32,33 15,25.5" fill="#FFFFFF" />
+          <path d="M22,29.5 L22,38 C22,43 42,43 42,38 L42,29.5" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" />
+          <path d="M44,26.5 L47.5,33 L47.5,39" fill="none" stroke="url(#brandGold)" stroke-width="2" stroke-linecap="round" />
+          <circle cx="47.5" cy="40.5" r="1.5" fill="url(#brandGold)" />
+          <path d="M22,46 C28,43 36,43 42,46" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" />
+          <line x1="32" y1="44" x2="32" y2="48" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <div class="brand-text">
+          <h1>CampusAI</h1>
+          <p>University Admission Assistant</p>
+        </div>
+      </a>
+
+      <!-- Navigation with Home on Right & Animated Underline -->
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="#explore" class="nav-link">Universities</a>
+        <a href="#features" class="nav-link">Information Areas</a>
+        <a href="chat.html" class="header-cta-btn">Consult Advisor</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       Full-Screen 1-Page Hero Banner (Borderless AI & Matching Dynamic Text)
+       ========================================================================== -->
+  <section class="hero-banner">
+    <div class="container">
+
+      <!-- Line 1: Headline "Campus by AI" with NO border / NO white box on AI -->
+      <h1 class="hero-brand-title">
+        Campus by <span class="ai-text">AI</span>
+      </h1>
+
+      <!-- Line 2: Dynamic Headline with NO border / NO badge container -->
+      <div class="hero-dynamic-wrap">
+        <span class="hero-dynamic-text" id="dynamicHeadline"></span>
+        <span class="typewriter-cursor">|</span>
+      </div>
+
+      <!-- Line 3: Clean Subtitle Paragraph -->
+      <p class="hero-subtext">
+        A simple and reliable platform to navigate your university journey. Inquire about entry test criteria, track live closing merits, calculate fees, and discover scholarships with ease.
+      </p>
+
+      <!-- Line 4: Two Action Buttons -->
+      <div class="hero-actions">
+        <!-- Button 1: Opens Full Window Chatbot Page with Shutter Up Animation -->
+        <a href="chat.html" class="btn-primary-action">
+          <span>Ask Admission Desk</span>
+          <i class="ph ph-arrow-right"></i>
+        </a>
+
+        <!-- Button 2: Smooth Scroll to Explore Section -->
+        <a href="#explore" class="btn-secondary-action">
+          <i class="ph ph-buildings"></i>
+          <span>Explore Campuses</span>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Floating Scroll Down Indicator -->
+    <a href="#explore" class="hero-scroll-indicator" aria-label="Scroll down to explore">
+      <span>Explore Below</span>
+      <i class="ph ph-caret-down"></i>
+    </a>
+  </section>
+
+  <!-- ==========================================================================
+       Section: Universities Covered by Chatbot (8 Premier Campuses)
+       ========================================================================== -->
+  <section class="section" id="explore">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag">RAG Knowledge Base</span>
+        <h2>Universities Covered by CampusAI</h2>
+        <p>Our assistant is indexed with verified prospectus and fee data for Pakistan's premier institutions. Select any campus to inquire:</p>
+      </div>
+
+      <div class="unis-grid">
+        <!-- 1. UET Lahore -->
+        <div class="uni-box" onclick="goToChat('UET Lahore ki admission criteria, ECAT formula aur fee structure batayein')">
+          <div class="uni-badge">UET</div>
+          <div class="uni-info">
+            <h4>UET Lahore</h4>
+            <p>Engineering &amp; Technology</p>
+          </div>
+          <i class="ph ph-arrow-right uni-arrow"></i>
+        </div>
+
+        <!-- 2. NUST Islamabad -->
+        <div class="uni-box" onclick="goToChat('NUST Islamabad ke NET registration dates, merit weightage aur fees batayein')">
+          <div class="uni-badge">NUST</div>
+          <div class="uni-info">
+            <h4>NUST Islamabad</h4>
+            <p>Federal Public University</p>
+          </div>
+          <i class="ph ph-arrow-right uni-arrow"></i>
+        </div>
+
+        <!-- 3. FAST-NUCES -->
+        <div class="uni-box" onclick="goToChat('FAST NUCES mein BS CS ki fees aur entry test criteria kya hai?')">
+          <div class="uni-badge">FAST</div>
+          <div class="uni-info">
+            <h4>FAST-NUCES</h4>
+            <p>Computer Science &amp; IT</p>
+          </div>
+          <i class="ph ph-arrow-right uni-arrow"></i>
+        </div>
+
+        <!-- 4. Quaid-i-Azam University -->
+        <div class="uni-box" onclick="goToChat('QAU Islamabad mein admissions, merit formula aur quota seats ki detail dein')">
+          <div class="uni-badge">QAU</div>
+          <div class="uni-info">
+            <h4>Quaid-i-Azam University</h4>
+            <p>Islamabad • HEC Ranked #1</p>
+          </div>
+          <i class="ph ph-arrow-right uni-arrow"></i>
+        </div>
+
+        <!-- 5. University of Sargodha -->
+        <div class="uni-box" onclick="goToChat('University of Sargodha (UOS) mein BS CS aur Pharmacy ki fee structure kya hai?')">
+          <div class="uni-badge">UOS</div>
+          <div class="uni-info">
+            <h4>University of Sargodha</h4>
+            <p>Public Sector Punjab</p>
+          </div>
+          <i class="ph ph-arrow-right uni-arrow"></i>
+        </div>
+
+        <!-- 6. Punjab University -->
+        <div class="uni-box" onclick="goToChat('Punjab University (PU) PUCIT admission test aur merit aggregate formula kya hai?')">
+          <div class="uni-badge">PU</div>
+          <div class="uni-info">
+            <h4>Punjab University</h4>
+            <p>Lahore • General &amp; Computing</p>
+          </div>
+          <i class="ph ph-arrow-right uni-arrow"></i>
+        </div>
+
+        <!-- 7. GIK Institute -->
+        <div class="uni-box" onclick="goToChat('GIK Institute Topi ki fees, test format aur financial aid options kya hain?')">
+          <div class="uni-badge">GIKI</div>
+          <div class="uni-info">
+            <h4>GIK Institute (GIKI)</h4>
+            <p>Engineering &amp; Sciences</p>
+          </div>
+          <i class="ph ph-arrow-right uni-arrow"></i>
+        </div>
+
+        <!-- 8. COMSATS University -->
+        <div class="uni-box" onclick="goToChat('COMSATS University Islamabad NTS NAT cutoff merit aur fee per semester kitni hai?')">
+          <div class="uni-badge">CUI</div>
+          <div class="uni-info">
+            <h4>COMSATS University</h4>
+            <p>Multi-Campus Public Sector</p>
+          </div>
+          <i class="ph ph-arrow-right uni-arrow"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       Section: 3 Core Information Cards (Admissions, Fees, Scholarships)
+       ========================================================================== -->
+  <section class="section section-alt" id="features">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag">Available Insights</span>
+        <h2>What Information You Can Ask</h2>
+        <p>Our assistant answers student questions across these three primary academic pillars:</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Card 1: Admissions -->
+        <div class="feature-card">
+          <div class="feature-icon-wrap">
+            <i class="ph ph-identification-card"></i>
+          </div>
+          <h3>Admissions &amp; Merit Criteria</h3>
+          <p>
+            Get clear breakdowns of entry test requirements, aggregate calculation formulas, eligibility percentages, and closing merit trends.
+          </p>
+          <ul class="feature-points">
+            <li><i class="ph ph-check-circle"></i> ECAT, NET &amp; NAT weightage rules</li>
+            <li><i class="ph ph-check-circle"></i> Matric &amp; FSc score requirements</li>
+            <li><i class="ph ph-check-circle"></i> Provincial &amp; regional quota seats</li>
+          </ul>
+          <button type="button" class="feature-btn" onclick="goToChat('Universities ke admission eligibility aur merit formulas batayein')">
+            Inquire About Admissions <i class="ph ph-arrow-right"></i>
+          </button>
+        </div>
+
+        <!-- Card 2: Fee Structure -->
+        <div class="feature-card">
+          <div class="feature-icon-wrap">
+            <i class="ph ph-receipt"></i>
+          </div>
+          <h3>Fee Structures &amp; Expenses</h3>
+          <p>
+            Access transparent, accurate estimates for per-semester tuition fees, registration dues, hostel boarding expenses, and total degree costs.
+          </p>
+          <ul class="feature-points">
+            <li><i class="ph ph-check-circle"></i> Per semester tuition fee breakdowns</li>
+            <li><i class="ph ph-check-circle"></i> Hostel &amp; mess charges</li>
+            <li><i class="ph ph-check-circle"></i> HEC National Fee Refund timeline</li>
+          </ul>
+          <button type="button" class="feature-btn" onclick="goToChat('Universities ki semester fees aur refund policy kya hai?')">
+            Inquire About Fees <i class="ph ph-arrow-right"></i>
+          </button>
+        </div>
+
+        <!-- Card 3: Scholarships -->
+        <div class="feature-card">
+          <div class="feature-icon-wrap">
+            <i class="ph ph-graduation-cap"></i>
+          </div>
+          <h3>Scholarships &amp; Financial Aid</h3>
+          <p>
+            Find available government and institutional financial grants designed so no deserving student is held back due to tuition constraints.
+          </p>
+          <ul class="feature-points">
+            <li><i class="ph ph-check-circle"></i> HEC Need-Based Scholarships</li>
+            <li><i class="ph ph-check-circle"></i> PEEF &amp; Ehsaas undergraduate grants</li>
+            <li><i class="ph ph-check-circle"></i> Merit-based tuition fee concessions</li>
+          </ul>
+          <button type="button" class="feature-btn" onclick="goToChat('Mujhe Pakistani university scholarships aur financial aid ki details dein')">
+            Inquire About Grants <i class="ph ph-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Floating Quick Launcher Button (Matching AI Dark Wine Color) -->
+  <a href="chat.html" class="floating-chat-trigger" aria-label="Open Full Chatbot">
+    <i class="ph ph-chat-circle-dots" style="font-size: 20px;"></i>
+    <span>Ask CampusAI</span>
+  </a>
+
+  <!-- ==========================================================================
+       Enlarged, Professional Multi-Column Footer (CampusAI Brand)
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-main-grid">
+
+        <!-- Col 1: Brand & Mission -->
+        <div class="footer-brand">
+          <div class="brand">
+            <svg class="brand-svg-mark" viewBox="0 0 64 64" width="38" height="38">
+              <rect x="4" y="4" width="56" height="56" rx="14" fill="#CF2E2E" />
+              <polygon points="32,18 49,25.5 32,33 15,25.5" fill="#FFFFFF" />
+              <path d="M22,29.5 L22,38 C22,43 42,43 42,38 L42,29.5" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" />
+            </svg>
+            <div class="brand-text">
+              <h3>CampusAI</h3>
+              <p>University Admission Assistant</p>
+            </div>
+          </div>
+          <p class="footer-desc">
+            An independent, non-commercial digital counseling desk empowering Pakistani students with transparent merit criteria, fee structures, and statutory educational rights.
+          </p>
+          <div class="footer-cert-pill">
+            <i class="ph ph-shield-check"></i>
+            <span>Higher Education Commission (HEC) Directives Compliant</span>
+          </div>
+        </div>
+
+        <!-- Col 2: Academic Disciplines Covered -->
+        <div>
+          <h4 class="footer-col-title">Covered Disciplines</h4>
+          <ul class="footer-col-links">
+            <li><a href="chat.html?q=Engineering%20programs%20PEC%20criteria%20and%20ECAT%20weightage%20batayein"><i class="ph ph-caret-right"></i> Engineering &amp; Technology (PEC)</a></li>
+            <li><a href="chat.html?q=Computer%20Science%20and%20Software%20Engineering%20NCEAC%20universities%20batayein"><i class="ph ph-caret-right"></i> Computing &amp; IT (NCEAC)</a></li>
+            <li><a href="chat.html?q=Natural%20Sciences%20and%20Social%20Sciences%20admissions%20QAU%20aur%20PU%20ki%20batayein"><i class="ph ph-caret-right"></i> Natural &amp; Social Sciences</a></li>
+            <li><a href="chat.html?q=Business%20and%20Management%20programs%20admissions%20criteria%20batayein"><i class="ph ph-caret-right"></i> Business Administration (NBEAC)</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Student Rights & Policies -->
+        <div>
+          <h4 class="footer-col-title">Student Safeguards</h4>
+          <ul class="footer-col-links">
+            <li><a href="chat.html?q=HEC%20National%20Fee%20Refund%20Policy%20ki%20exact%20percentages%20aur%20timeline%20kya%20hai%3F"><i class="ph ph-caret-right"></i> HEC Fee Refund Policy</a></li>
+            <li><a href="chat.html?q=Balochistan%20aur%20Former%20FATA%20quota%20seats%20ki%20eligibility%20kya%20hai%3F"><i class="ph ph-caret-right"></i> Provincial Quota Admissions</a></li>
+            <li><a href="chat.html?q=University%20mein%20semester%20freeze%20karne%20ke%20kya%20rules%20hain%3F"><i class="ph ph-caret-right"></i> Semester Freezing Regulations</a></li>
+            <li><a href="chat.html?q=HEC%20Need-Based%20aur%20PEEF%20scholarships%20application%20process%20kya%20hai%3F"><i class="ph ph-caret-right"></i> Financial Aid &amp; Grants</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Advisory Status & Support -->
+        <div>
+          <h4 class="footer-col-title">Counseling Desk</h4>
+          <div class="footer-info-card">
+            <strong style="color: #FFFFFF; display: block; margin-bottom: 4px;">Full-Window AI Consultation:</strong>
+            Powered by RAG automated retrieval from authorized university prospectuses and gazettes.
+          </div>
+          <a href="chat.html" class="header-cta-btn" style="width: 100%; justify-content: center;">
+            <i class="ph ph-chat-circle-dots"></i> Open Advisory Desk
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom-bar">
+        <div>
+          &copy; 2024–2026 CampusAI. All university logos, names, and trademarks belong to their respective statutory chartered bodies.
+        </div>
+        <div>
+          <span>Non-commercial educational counseling service</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Dynamic Headline in Exact Dark Wine Color matching "AI"
+    const dynamicPhrases = [
+      "The Admission Desk.",
+      "The Merit Calculator.",
+      "The Fee Navigator.",
+      "The Scholarship Guide."
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initDynamicHeadline();
+    });
+
+    function initDynamicHeadline() {
+      const el = document.getElementById('dynamicHeadline');
+      if (!el) return;
+
+      let phraseIndex = 0;
+      let charIndex = 0;
+      let isDeleting = false;
+      const typeSpeed = 50;
+      const deleteSpeed = 26;
+      const holdDuration = 2000;
+      const betweenPause = 350;
+
+      function tick() {
+        const currentPhrase = dynamicPhrases[phraseIndex];
+
+        if (!isDeleting) {
+          charIndex++;
+          el.textContent = currentPhrase.substring(0, charIndex);
+
+          if (charIndex === currentPhrase.length) {
+            isDeleting = true;
+            setTimeout(tick, holdDuration);
+            return;
+          }
+          setTimeout(tick, typeSpeed);
+        } else {
+          charIndex--;
+          el.textContent = currentPhrase.substring(0, charIndex);
+
+          if (charIndex === 0) {
+            isDeleting = false;
+            phraseIndex = (phraseIndex + 1) % dynamicPhrases.length;
+            setTimeout(tick, betweenPause);
+            return;
+          }
+          setTimeout(tick, deleteSpeed);
+        }
+      }
+
+      tick();
+    }
+
+    function goToChat(query) {
+      window.location.href = 'chat.html?q=' + encodeURIComponent(query);
+    }
+  </script>
+</body>
+
+</html>
